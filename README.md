@@ -83,7 +83,7 @@ If you want to modify the code or build it yourself:
 1.  **Install Go** (1.23 or newer).
 2.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/XPLassal/simple-snake-on-go.git](https://github.com/XPLassal/simple-snake-on-go.git)
+    git clone https://github.com/XPLassal/simple-snake-on-go.git
     cd simple-snake-on-go
     ```
 3.  **Run locally:**
