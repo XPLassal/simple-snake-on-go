@@ -1,34 +1,30 @@
 package render
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
 	. "github.com/XPLassal/simple-snake-on-go/structs"
 )
 
-func RenderField(numberOfColumns int, apple *Apple, snake *Snake) {
-	ClearConsole()
-
-	var field strings.Builder
+func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Builder) {
+	sb.WriteString("\033[H")
 	var isHaveApple, isHaveSnake, isHeadOfSnake, isDark bool
 
-	field.WriteString(Bold + "Your Score: " + strconv.Itoa(snake.GetLen()) + Reset + "\n")
-	field.WriteString(DrawBordersForY(numberOfColumns) + "\n")
+	sb.WriteString(Bold + "Your Score: " + strconv.Itoa(snake.GetLen()) + Reset + "\n")
+	sb.WriteString(DrawBordersForY(numberOfColumns) + "\n")
 
 	for y := range numberOfColumns {
-		field.WriteString(DrawBordersForX())
+		sb.WriteString(DrawBordersForX())
 		for x := range numberOfColumns {
 			coords := SetCoordinates(x, y)
 			isHeadOfSnake, isHaveSnake = snake.Contains(coords)
 			isHaveApple = apple.Contains(coords)
-			field.WriteString(DrawBg(isHaveApple, isDark, isHaveSnake, isHeadOfSnake))
+			sb.WriteString(DrawBg(isHaveApple, isDark, isHaveSnake, isHeadOfSnake))
 			isDark = !isDark
 		}
-		field.WriteString(DrawBordersForX() + "\n")
+		sb.WriteString(DrawBordersForX() + "\n")
 	}
 
-	field.WriteString(DrawBordersForY(numberOfColumns))
-	fmt.Println(field.String(), "\nTo exit, press q.")
+	sb.WriteString(DrawBordersForY(numberOfColumns) + "\nTo exit, press q.\n")
 }

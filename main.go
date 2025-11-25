@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 	"time"
 
 	. "github.com/XPLassal/simple-snake-on-go/render"
@@ -53,8 +56,16 @@ func main() {
 		}
 	}()
 
+	writer := bufio.NewWriter(os.Stdout)
+	var sb strings.Builder
+	sb.Grow(numbersOfColumns * numbersOfColumns * 20)
+	ClearConsole()
+
 	for {
-		RenderField(numbersOfColumns, &apple, &snake)
+		sb.Reset()
+		RenderField(numbersOfColumns, &apple, &snake, &sb)
+		writer.WriteString(sb.String())
+		writer.Flush()
 		select {
 		case <-ticker.C:
 			err := snake.Move(&apple, numbersOfColumns)
