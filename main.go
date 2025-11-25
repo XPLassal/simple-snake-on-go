@@ -26,7 +26,7 @@ func main() {
 	if gameAcceleration == "y" {
 		go func() {
 			for {
-				time.Sleep(time.Duration(numbersOfColumns / 3))
+				time.Sleep(time.Duration(numbersOfColumns/3) * time.Second)
 				if baseMilliseconds > 50*time.Millisecond {
 					baseMilliseconds -= 2 * time.Millisecond
 				}
