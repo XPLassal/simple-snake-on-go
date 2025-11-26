@@ -16,7 +16,7 @@ type Config struct {
 
 const configFileName = "config.json"
 
-func (cfg *Config) CreateConfig() {
+func CreateConfig() *Config {
 	var cols int
 	var hardInput, emojiInput string
 
@@ -36,7 +36,7 @@ func (cfg *Config) CreateConfig() {
 		fmt.Println("Warning: could not save config:", err)
 	}
 
-	cfg = &Config{
+	return &Config{
 		Columns:  cols,
 		HardMode: hardMode,
 		UseEmoji: useEmoji,

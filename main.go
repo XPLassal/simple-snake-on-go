@@ -17,7 +17,7 @@ func main() {
 	cfg, exists := LoadConfig()
 
 	if !exists {
-		cfg.CreateConfig()
+		cfg = CreateConfig()
 	}
 
 	numbersOfColumns := cfg.Columns
@@ -90,7 +90,7 @@ func main() {
 				return
 			case 'c':
 				keyboard.Close()
-				cfg.CreateConfig()
+				cfg = CreateConfig()
 				sb.WriteString("Okay, restart the game please😉")
 				return
 			case 'p':
