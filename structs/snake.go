@@ -78,7 +78,7 @@ func (snake *Snake) Move(apple *Apple, numbersOfColumns int) error {
 
 	snake.body[head] = newHead
 	snake.head = newHead
-	snake.body[newHead] = Coordinates{}
+	snake.body[newHead] = newHead
 
 	if apple.Contains(newHead) {
 		apple.EatApple(newHead, numbersOfColumns, snake)
