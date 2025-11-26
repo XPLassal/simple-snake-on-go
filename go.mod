@@ -1,4 +1,4 @@
-module github.com/XPLassal/simple-snake-on-go
+module github.com/XPLassal/simple-go-snake
 
 go 1.25
 

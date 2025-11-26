@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/XPLassal/simple-snake-on-go/structs"
+	"github.com/XPLassal/simple-go-snake/structs"
 )
 
 func BenchmarkRender(b *testing.B) {

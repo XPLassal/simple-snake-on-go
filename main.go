@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	. "github.com/XPLassal/simple-snake-on-go/render"
-	. "github.com/XPLassal/simple-snake-on-go/structs"
+	. "github.com/XPLassal/simple-go-snake/render"
+	. "github.com/XPLassal/simple-go-snake/structs"
 	"github.com/eiannone/keyboard"
 )
 
@@ -91,7 +91,7 @@ func main() {
 			case 'c':
 				keyboard.Close()
 				cfg = CreateConfig()
-				sb.WriteString("Okay, restart the game please😉")
+				fmt.Println("Okay, restart the game please😉")
 				return
 			case 'p':
 				direction = ' '

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	. "github.com/XPLassal/simple-snake-on-go/structs"
+	. "github.com/XPLassal/simple-go-snake/structs"
 )
 
 func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Builder, withEmoji bool) {

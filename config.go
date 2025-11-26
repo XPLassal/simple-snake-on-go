@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	. "github.com/XPLassal/simple-snake-on-go/render"
+	. "github.com/XPLassal/simple-go-snake/render"
 )
 
 type Config struct {
@@ -15,7 +15,7 @@ type Config struct {
 	UseEmoji bool `json:"use_emoji"`
 }
 
-const appDirName = "simple-snake-on-go"
+const appDirName = "simple-go-snake"
 const configFileName = "config.json"
 
 func getConfigPath() (string, error) {
