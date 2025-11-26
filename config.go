@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	. "github.com/XPLassal/simple-snake-on-go/render"
 )
@@ -14,7 +15,16 @@ type Config struct {
 	UseEmoji bool `json:"use_emoji"`
 }
 
+const appDirName = "simple-snake-on-go"
 const configFileName = "config.json"
+
+func getConfigPath() (string, error) {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(configDir, appDirName, configFileName), nil
+}
 
 func CreateConfig() *Config {
 	var cols int
@@ -33,7 +43,8 @@ func CreateConfig() *Config {
 
 	err := SaveConfig(cols, hardMode, useEmoji)
 	if err != nil {
-		fmt.Println("Warning: could not save config:", err)
+		path, _ := getConfigPath()
+		fmt.Printf("Warning: could not save config to %s: %v\n", path, err)
 	}
 
 	return &Config{
@@ -44,7 +55,12 @@ func CreateConfig() *Config {
 }
 
 func LoadConfig() (*Config, bool) {
-	file, err := os.Open(configFileName)
+	path, err := getConfigPath()
+	if err != nil {
+		return nil, false
+	}
+
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, false
 	}
@@ -66,7 +82,17 @@ func SaveConfig(columns int, hardMode bool, useEmoji bool) error {
 		UseEmoji: useEmoji,
 	}
 
-	file, err := os.Create(configFileName)
+	path, err := getConfigPath()
+	if err != nil {
+		return err
+	}
+
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return err
+	}
+
+	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
