@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Simple Snake Go
+Comment=High-performance terminal Snake game
+Exec=simple-snake-on-go
+Icon=simple-snake-on-go
+Terminal=true
+Categories=Game;ArcadeGame;
+Keywords=snake;game;terminal;go;
