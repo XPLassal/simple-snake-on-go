@@ -10,80 +10,76 @@ A modern, hyper-optimized implementation of the classic Snake game that runs dir
 
 ---
 
-## ⚡ Key Features (v3.0)
+## ⚡ Key Features (v3.1)
 
-* **🚀 True O(1) Performance:** The game engine relies on a custom **Linked List via Map** data structure. Movement and collision checks are instant (~300ns), regardless of snake length.
-* **🎮 Smart Input Handling:** Implemented **Input Locking** to prevent "suicide turns" (e.g., pressing Down -> Left too fast causing a self-collision). The game now intelligently processes the queue of direction changes.
-* **🎨 Low-Allocation Rendering:** Uses a pre-allocated buffer and `bufio.Writer`. The entire frame (~23KB) generates only ~13 internal allocations, causing virtually zero GC pressure.
-* **💻 Cross-Platform:** Runs natively on **Windows**, **Linux**, and **macOS** (Intel & Apple Silicon).
-* **⚙️ Dynamic Gameplay:** "Hard Mode" increases game speed as you progress.
+* **⏸️ Pause Game:** Need a break? Press **'P'** to freeze the snake. Press any direction key to resume.
+* **⚙️ Persistent Configuration:** The game saves your settings (`config.json`). No need to enter them every time!
+* **📺 ASCII Support (SSH Friendly):** Added a toggle for **Emoji** vs **ASCII** graphics. Use ASCII mode if you are running the game over SSH or on a terminal without Unicode support.
+* **🚀 True O(1) Performance:** The engine uses a **Linked List via Map** structure. Movement is instant (~300ns) regardless of snake length.
+* **🎮 Smart Input:** Input Locking prevents accidental "suicide turns".
+* **💻 Cross-Platform:** Runs natively on **Windows**, **Linux**, and **macOS**.
 
 ---
 
 ## 🎮 How to Play
 
 ### Option 1: Download Binary (Recommended)
-You don't need Go installed. Just grab the executable for your OS from the [**Releases Page**](https://github.com/XPLassal/simple-snake-on-go/releases/latest).
+Download the executable for your OS from the [**Releases Page**](https://github.com/XPLassal/simple-snake-on-go/releases/latest).
 
 | OS | File |
 | :--- | :--- |
 | 🪟 **Windows** | `snake-windows-amd64.exe` |
 | 🐧 **Linux** | `snake-linux-amd64` |
-| 🍎 **macOS (M1/M2)** | `snake-macos-arm64` |
+| 🍎 **macOS (Apple Silicon)** | `snake-macos-arm64` |
 | 🍎 **macOS (Intel)** | `snake-macos-intel` |
 
-**Linux/macOS Note:**
-If the file doesn't run, give it permission:
-```bash
-chmod +x snake-linux-amd64
-./snake-linux-amd64
-```
+*(Linux/macOS users: run `chmod +x <file>` to make it executable).*
 
 ### Option 2: Build from Source
-
-Requirements: [Go 1.23+](https://go.dev/dl/)
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/XPLassal/simple-snake-on-go.git](https://github.com/XPLassal/simple-snake-on-go.git)
-    cd simple-snake-on-go
-    ```
-2.  **Run directly:**
-    ```bash
-    go run .
-    ```
-3.  **Build binaries:**
-    ```bash
-    ./build.sh
-    ```
+```bash
+git clone [https://github.com/XPLassal/simple-snake-on-go.git](https://github.com/XPLassal/simple-snake-on-go.git)
+cd simple-snake-on-go
+go run .
+```
 
 -----
 
-## 📊 Performance Benchmarks
+## ⚙️ Configuration
 
-Benchmarks run on AMD Ryzen 5 5600H. The logic maintains **O(1)** complexity.
+On the first run, the game will ask for your preferences. These are saved to `config.json`.
 
-| Component | Operation | Time | Memory | Allocations |
-| :--- | :--- | :--- | :--- | :--- |
-| **Logic** | Move (Short) | \~360 ns/op | 0 B/op | **0 allocs/op** |
-| **Logic** | Move (Medium) | \~230 ns/op | 0 B/op | **0 allocs/op** |
-| **Logic** | Move (Huge) | \~280 ns/op | 0 B/op | **0 allocs/op** |
-| **Render** | Draw Frame | \~22 µs/op | \~23 KB/op | **13 allocs/op** |
+| Setting | Description |
+| :--- | :--- |
+| **Columns** | Map size (e.g., 20). |
+| **Hard Mode** | If `y`, the game speeds up as your score increases. |
+| **Use Emojis** | `y` for beautiful graphics (🐍/🍎). `n` for ASCII (`%`/`@`) - recommended for SSH/Old Terminals. |
 
-> **Proof:** Logic operations generate **zero garbage**. Rendering is heavily optimized to reuse memory buffers.
+> **Tip:** You can delete `config.json` to reset settings.
 
 -----
 
-## 🏗 Architecture
+## 🕹 Controls
 
-  * **Data Structures:** `map[Coordinates]Coordinates` acting as a Linked List.
-      * **Key:** Current segment. **Value:** Next segment.
-      * **Move:** Add Head, Delete Tail → **$O(1)$**
-  * **Optimization:** Structures are passed by pointers (`*Snake`) to avoid memory copying.
-  * **Rendering:** `strings.Builder` + `bufio.Writer` + ANSI Cursor Reset (`\033[H`).
+| Key | Action |
+| :---: | :--- |
+| **W, A, S, D** | Move Snake ⬆️⬅️⬇️➡️ |
+| **P** | **Pause Game** ⏸️ |
+| **C** | **Config / Restart** (Stops current game) |
+| **Q** | Quit Game |
+
+-----
+
+## 🏗 Technical Details
+
+  * **Logic:** `map[Coordinates]Coordinates` (Linked List) for **O(1)** movement.
+  * **Rendering:** `strings.Builder` + `bufio.Writer` for zero-allocation rendering per frame.
+  * **Architecture:**
+      * `main`: Game Loop & Input Handling.
+      * `structs`: Domain Entities (Snake, Apple) & Persistence Logic.
+      * `render`: UI & Drawing Logic.
 
 -----
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the MIT License.

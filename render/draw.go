@@ -4,25 +4,40 @@ import (
 	"strings"
 )
 
-func DrawBg(sb *strings.Builder, haveApple, isDarkBg, isSnake, isHeadOfSnake bool) {
+func DrawBg(sb *strings.Builder, haveApple, isDarkBg, isSnake, isHeadOfSnake, withEmoji bool) {
 	if isDarkBg {
 		sb.WriteString(BgDarkGreen)
 	} else {
 		sb.WriteString(BgGreen)
 	}
 
-	if isSnake {
-		if isHeadOfSnake {
-			sb.WriteString("🐍")
+	if withEmoji {
+		if isSnake {
+			if isHeadOfSnake {
+				sb.WriteString("🐍")
+			} else {
+				sb.WriteString("🟢")
+			}
+		} else if haveApple {
+			sb.WriteString("🍎")
 		} else {
-			sb.WriteString("🟢")
+			sb.WriteString("  ")
 		}
-	} else if haveApple {
-		sb.WriteString("🍎")
+		sb.WriteString(Reset)
 	} else {
-		sb.WriteString("  ")
+		if isSnake {
+			if isHeadOfSnake {
+				sb.WriteString("% ")
+			} else {
+				sb.WriteString("* ")
+			}
+		} else if haveApple {
+			sb.WriteString("@ ")
+		} else {
+			sb.WriteString("  ")
+		}
+		sb.WriteString(Reset)
 	}
-	sb.WriteString(Reset)
 }
 
 const BgForBorder = BgWhite

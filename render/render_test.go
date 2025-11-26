@@ -17,7 +17,7 @@ func BenchmarkRender(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		sb.Reset()
-		RenderField(n, apple, snake, &sb)
+		RenderField(n, apple, snake, &sb, true)
 		_ = sb.String()
 	}
 }

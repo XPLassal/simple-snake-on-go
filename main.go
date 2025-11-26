@@ -14,17 +14,18 @@ import (
 )
 
 func main() {
-	var numbersOfColumns int
-	var gameAcceleration string
-	GetNumberOfColumns(&numbersOfColumns)
+	cfg, exists := LoadConfig()
 
-	fmt.Print("Do you want the game speed to increase as you progress? (y/n): ")
-	fmt.Scan(&gameAcceleration)
+	if !exists {
+		cfg.CreateConfig()
+	}
+
+	numbersOfColumns := cfg.Columns
 
 	baseMilliseconds := 200 * time.Millisecond
 	ticker := time.NewTicker(baseMilliseconds)
 
-	if gameAcceleration == "y" {
+	if cfg.HardMode {
 		go func() {
 			for {
 				time.Sleep(time.Duration(numbersOfColumns/3) * time.Second)
@@ -50,6 +51,7 @@ func main() {
 		for {
 			char, _, err := keyboard.GetKey()
 			if err != nil {
+				close(keyCh)
 				return
 			}
 			keyCh <- char
@@ -58,7 +60,7 @@ func main() {
 
 	writer := bufio.NewWriter(os.Stdout)
 	var sb strings.Builder
-	sb.Grow(numbersOfColumns * numbersOfColumns * 20)
+	sb.Grow(numbersOfColumns * numbersOfColumns * 50)
 	ClearConsole()
 
 	moveSnake := func() bool {
@@ -73,7 +75,7 @@ func main() {
 
 	for {
 		sb.Reset()
-		RenderField(numbersOfColumns, apple, snake, &sb)
+		RenderField(numbersOfColumns, apple, snake, &sb, cfg.UseEmoji)
 		writer.WriteString(sb.String())
 		writer.Flush()
 		select {
@@ -82,9 +84,15 @@ func main() {
 				return
 			}
 		case direction := <-keyCh:
-			if direction == 'q' {
-				fmt.Println("Game stopped, bye! 🙃")
+			switch direction {
+			case 'q':
+				sb.WriteString("Game stopped, bye! 🙃")
 				return
+			case 'c':
+				sb.WriteString("Okay, restart the game please😉")
+				return
+			case 'p':
+				direction = ' '
 			}
 			snake.SetDirection(direction)
 			<-ticker.C

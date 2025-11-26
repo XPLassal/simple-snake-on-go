@@ -7,7 +7,7 @@ import (
 	. "github.com/XPLassal/simple-snake-on-go/structs"
 )
 
-func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Builder) {
+func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Builder, withEmoji bool) {
 	sb.WriteString("\033[H")
 
 	sb.WriteString(Bold)
@@ -28,7 +28,7 @@ func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Bu
 			isHeadOfSnake, isHaveSnake := snake.Contains(coords)
 			isHaveApple := apple.Contains(coords)
 
-			DrawBg(sb, isHaveApple, isDark, isHaveSnake, isHeadOfSnake)
+			DrawBg(sb, isHaveApple, isDark, isHaveSnake, isHeadOfSnake, withEmoji)
 
 			isDark = !isDark
 		}
@@ -38,5 +38,11 @@ func RenderField(numberOfColumns int, apple *Apple, snake *Snake, sb *strings.Bu
 	}
 
 	DrawBordersForY(sb, numberOfColumns)
-	sb.WriteString("\nTo exit, press q.\n")
+	sb.WriteRune('\n')
+	keys := []string{"q: Exit", "c: Config", "p: Pause"}
+	for _, v := range keys {
+		sb.WriteString(v)
+		sb.WriteByte(' ')
+	}
+	sb.WriteRune('\n')
 }
