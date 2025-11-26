@@ -1,8 +1,9 @@
-# 🐍 High-Performance Snake in Go
+# 🐍 Simple Go Snake
 
 [![Go Version](https://img.shields.io/badge/Go-1.23+-00ADD8?style=flat&logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-gray)](https://github.com/XPLassal/simple-snake-on-go/releases)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-gray)](https://github.com/XPLassal/simple-go-snake/releases)
+[![AUR](https://img.shields.io/aur/version/simple-go-snake?label=AUR&logo=arch-linux&color=blue)](https://aur.archlinux.org/packages/simple-go-snake)
 
 A modern, hyper-optimized implementation of the classic Snake game that runs directly in your terminal. Written in **Pure Go** with a focus on **Clean Architecture** and **O(1) Algorithms**.
 
@@ -10,21 +11,28 @@ A modern, hyper-optimized implementation of the classic Snake game that runs dir
 
 ---
 
-## ⚡ Key Features (v3.1)
+## ⚡ Key Features (v4.0)
 
-* **⏸️ Pause Game:** Need a break? Press **'P'** to freeze the snake. Press any direction key to resume.
-* **⚙️ Persistent Configuration:** The game saves your settings (`config.json`). No need to enter them every time!
-* **📺 ASCII Support (SSH Friendly):** Added a toggle for **Emoji** vs **ASCII** graphics. Use ASCII mode if you are running the game over SSH or on a terminal without Unicode support.
+* **📦 AUR Support:** Install easily on Arch Linux via `simple-go-snake`.
+* **⏸️ Pause Game:** Need a break? Press **'P'** to freeze the snake.
+* **💾 Standard Configs:** Settings are saved automatically in your system's standard config folder (XDG/AppData).
+* **📺 ASCII & Emoji Modes:** Toggle between beautiful 🐍 graphics or SSH-friendly ASCII (`%`/`@`) mode.
 * **🚀 True O(1) Performance:** The engine uses a **Linked List via Map** structure. Movement is instant (~300ns) regardless of snake length.
-* **🎮 Smart Input:** Input Locking prevents accidental "suicide turns".
-* **💻 Cross-Platform:** Runs natively on **Windows**, **Linux**, and **macOS**.
+* **💻 Cross-Platform:** Native builds for **Windows** (with icon support), **Linux**, and **macOS**.
 
 ---
 
-## 🎮 How to Play
+## 📥 Installation
 
-### Option 1: Download Binary (Recommended)
-Download the executable for your OS from the [**Releases Page**](https://github.com/XPLassal/simple-snake-on-go/releases/latest).
+### Arch Linux (AUR)
+The recommended way for Arch users:
+```bash
+paru -S simple-go-snake
+```
+
+### Manual Download (All OS)
+
+Download the executable for your OS from the [**Releases Page**](https://www.google.com/search?q=https://github.com/XPLassal/simple-go-snake/releases/latest).
 
 | OS | File |
 | :--- | :--- |
@@ -35,26 +43,33 @@ Download the executable for your OS from the [**Releases Page**](https://github.
 
 *(Linux/macOS users: run `chmod +x <file>` to make it executable).*
 
-### Option 2: Build from Source
+### Build from Source
+
 ```bash
-git clone [https://github.com/XPLassal/simple-snake-on-go.git](https://github.com/XPLassal/simple-snake-on-go.git)
-cd simple-snake-on-go
-go run .
+git clone [https://github.com/XPLassal/simple-go-snake.git](https://github.com/XPLassal/simple-go-snake.git)
+cd simple-go-snake
+go build -ldflags "-s -w" -o snake .
+./snake
 ```
 
 -----
 
 ## ⚙️ Configuration
 
-On the first run, the game will ask for your preferences. These are saved to `config.json`.
+On the first run, the game will ask for your preferences (Size, Difficulty, Emoji/ASCII).
+These settings are saved permanently in your system's user folder:
+
+  * **Linux:** `~/.config/simple-go-snake/config.json`
+  * **Windows:** `%AppData%\simple-go-snake\config.json`
+  * **macOS:** `~/Library/Application Support/simple-go-snake/config.json`
 
 | Setting | Description |
 | :--- | :--- |
 | **Columns** | Map size (e.g., 20). |
 | **Hard Mode** | If `y`, the game speeds up as your score increases. |
-| **Use Emojis** | `y` for beautiful graphics (🐍/🍎). `n` for ASCII (`%`/`@`) - recommended for SSH/Old Terminals. |
+| **Use Emojis** | `y` for beautiful graphics. `n` for ASCII - recommended for SSH or older terminals. |
 
-> **Tip:** You can delete `config.json` to reset settings.
+> **Tip:** Delete `config.json` to reset settings or press **'C'** inside the game.
 
 -----
 
@@ -71,12 +86,9 @@ On the first run, the game will ask for your preferences. These are saved to `co
 
 ## 🏗 Technical Details
 
-  * **Logic:** `map[Coordinates]Coordinates` (Linked List) for **O(1)** movement.
+  * **Logic:** `map[Coordinates]Coordinates` (Linked List) for **O(1)** movement logic.
   * **Rendering:** `strings.Builder` + `bufio.Writer` for zero-allocation rendering per frame.
-  * **Architecture:**
-      * `main`: Game Loop & Input Handling.
-      * `structs`: Domain Entities (Snake, Apple) & Persistence Logic.
-      * `render`: UI & Drawing Logic.
+  * **Architecture:** Clean separation of `main` (Loop), `structs` (Domain), and `render` (UI).
 
 -----
 
