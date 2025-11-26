@@ -32,10 +32,12 @@ func (apple *Apple) GetLen() int {
 }
 
 func NewApples(numberOfColumns int, snake *Snake) *Apple {
-	cap := numberOfColumns*2 - 1
-	apple := Apple{body: make(map[Coordinates]struct{}, cap)}
+	const appleDensity = 0.12
+	totalSpace := numberOfColumns*numberOfColumns - 1
+	maxApples := int(float64(totalSpace) * appleDensity)
+	apple := Apple{body: make(map[Coordinates]struct{}, maxApples)}
 
-	for apple.GetLen() < cap {
+	for apple.GetLen() < maxApples {
 		apple.AddNew(numberOfColumns, snake)
 	}
 	return &apple
